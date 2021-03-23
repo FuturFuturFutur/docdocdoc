@@ -30,6 +30,44 @@ class DocdocdocServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if ($this->app->runningInConsole()) {
+            $this->publishConfig();
+            $this->registerCommands();
+            $this->registerBindings();
+        }
+
+        $this->registerMiddlewares();
+    }
+
+    private function publishConfig()
+    {
+        $this->publishes([__DIR__ . '/../config/docdocdoc.php' => config_path('docdocdoc.php')], 'config');
+
+        // Renders
+        $this->publishes([__DIR__ . '/../renders/swagger/docker-compose.yml' => base_path('docker-compose.swagger.yml')], 'renders.swagger');
+    }
+
+    private function registerCommands()
+    {
+        $this->commands([
+            InitCommand::class,
+            RenderCommand::class,
+        ]);
+    }
+
+    private function registerBindings()
+    {
+        $this->app->bind(FormatServiceInterface::class, function (){
+            switch (Config::get('docdocdoc.type')){
+                default:
+                    return new SwaggerFormatService();
+            }
+        });
+    }
+
+    private function registerMiddlewares()
+    {
+        $kernel = $this->app->make(Kernel::class);
+        $kernel->pushMiddleware(DocDocDocMiddleware::class);
     }
 }
