@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: swagger
+    ports:
+      - "9191:8080"
+    volumes:
+      - /storage/app/docdocdoc:/docdocdoc
+    environment:
+      SWAGGER_JSON=/docdocdoc/swagger.json:
