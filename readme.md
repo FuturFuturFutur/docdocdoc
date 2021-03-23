@@ -56,10 +56,7 @@ You can just run your tests with `php artisan test`, package will generate docum
  * Grouped paths with descriptions and methods
  * Path, query and body parameters from request
  * Responses for the route with payloads and codes
- <br/>
-TO DO 
- <br/>
- * Validation rules for request parameters 
+ * Validation rules for request parameters  (to do)
 
 ### Render service
 Package contains ready to go docker-compose for api documentation renderers
